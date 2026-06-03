@@ -1,162 +1,125 @@
 {
-  "title": "实验二（困难）：对比三点法、前置量法与半前置量法",
-  "mode": "law_compare_elevation",
+  "title": "实验 2.0：三点法、前置量法与半前置量法对比",
   "results": [
     {
-      "case_name": "三点法-30",
       "law_name": "三点法",
-      "lead_factor": 0.0,
+      "elevation_deg": 30,
       "max_required_overload_g": 38.914598,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
       "miss_distance_m": 4013.121839,
       "intercepted": false,
-      "flight_time_s": 2.84,
-      "saturation_ratio": 0.438596,
-      "elevation_deg": 30
+      "flight_time_s": 2.84
     },
     {
-      "case_name": "前置量法-30",
       "law_name": "前置量法",
-      "lead_factor": 1.0,
-      "max_required_overload_g": 78815.838474,
+      "elevation_deg": 30,
+      "max_required_overload_g": 92750.672413,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
-      "miss_distance_m": 4157.1076,
+      "miss_distance_m": 4157.865999,
       "intercepted": false,
-      "flight_time_s": 3.79,
-      "saturation_ratio": 0.952632,
-      "elevation_deg": 30
+      "flight_time_s": 2.58
     },
     {
-      "case_name": "半前置量法-30",
       "law_name": "半前置量法",
-      "lead_factor": 0.5,
-      "max_required_overload_g": 49584.377822,
+      "elevation_deg": 30,
+      "max_required_overload_g": 33471.866446,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
-      "miss_distance_m": 4138.925297,
+      "miss_distance_m": 4138.960708,
       "intercepted": false,
-      "flight_time_s": 2.5,
-      "saturation_ratio": 0.824701,
-      "elevation_deg": 30
+      "flight_time_s": 2.47
     },
     {
-      "case_name": "三点法-45",
       "law_name": "三点法",
-      "lead_factor": 0.0,
+      "elevation_deg": 45,
       "max_required_overload_g": 42.654614,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
       "miss_distance_m": 4013.499354,
       "intercepted": false,
-      "flight_time_s": 2.65,
-      "saturation_ratio": 0.545113,
-      "elevation_deg": 45
+      "flight_time_s": 2.65
     },
     {
-      "case_name": "前置量法-45",
       "law_name": "前置量法",
-      "lead_factor": 1.0,
-      "max_required_overload_g": 72614.699038,
+      "elevation_deg": 45,
+      "max_required_overload_g": 152332.646851,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
-      "miss_distance_m": 4112.090075,
+      "miss_distance_m": 4108.342316,
       "intercepted": false,
-      "flight_time_s": 3.55,
-      "saturation_ratio": 0.988764,
-      "elevation_deg": 45
+      "flight_time_s": 4.26
     },
     {
-      "case_name": "半前置量法-45",
       "law_name": "半前置量法",
-      "lead_factor": 0.5,
+      "elevation_deg": 45,
       "max_required_overload_g": 62342.891807,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
-      "miss_distance_m": 4112.485378,
+      "miss_distance_m": 4112.931208,
       "intercepted": false,
-      "flight_time_s": 2.6,
-      "saturation_ratio": 0.904215,
-      "elevation_deg": 45
+      "flight_time_s": 2.47
     },
     {
-      "case_name": "三点法-60",
       "law_name": "三点法",
-      "lead_factor": 0.0,
+      "elevation_deg": 60,
       "max_required_overload_g": 46.02947,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
       "miss_distance_m": 3931.099091,
       "intercepted": false,
-      "flight_time_s": 2.6,
-      "saturation_ratio": 0.624521,
-      "elevation_deg": 60
+      "flight_time_s": 2.6
     },
     {
-      "case_name": "前置量法-60",
       "law_name": "前置量法",
-      "lead_factor": 1.0,
-      "max_required_overload_g": 78186.021836,
+      "elevation_deg": 60,
+      "max_required_overload_g": 215974.512879,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
-      "miss_distance_m": 4004.975737,
+      "miss_distance_m": 4004.975701,
       "intercepted": false,
-      "flight_time_s": 3.65,
-      "saturation_ratio": 0.997268,
-      "elevation_deg": 60
+      "flight_time_s": 3.63
     },
     {
-      "case_name": "半前置量法-60",
       "law_name": "半前置量法",
-      "lead_factor": 0.5,
-      "max_required_overload_g": 83030.968202,
+      "elevation_deg": 60,
+      "max_required_overload_g": 115094.661787,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
-      "miss_distance_m": 4011.492833,
+      "miss_distance_m": 4011.269565,
       "intercepted": false,
-      "flight_time_s": 4.34,
-      "saturation_ratio": 0.956322,
-      "elevation_deg": 60
+      "flight_time_s": 4.33
     },
     {
-      "case_name": "三点法-75",
       "law_name": "三点法",
-      "lead_factor": 0.0,
+      "elevation_deg": 75,
       "max_required_overload_g": 49.267572,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
       "miss_distance_m": 3826.841597,
       "intercepted": false,
-      "flight_time_s": 2.63,
-      "saturation_ratio": 0.689394,
-      "elevation_deg": 75
+      "flight_time_s": 2.63
     },
     {
-      "case_name": "前置量法-75",
       "law_name": "前置量法",
-      "lead_factor": 1.0,
-      "max_required_overload_g": 81172.34865,
+      "elevation_deg": 75,
+      "max_required_overload_g": 255933.445882,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
-      "miss_distance_m": 3885.545065,
+      "miss_distance_m": 3884.369791,
       "intercepted": false,
-      "flight_time_s": 4.09,
-      "saturation_ratio": 0.992683,
-      "elevation_deg": 75
+      "flight_time_s": 4.07
     },
     {
-      "case_name": "半前置量法-75",
       "law_name": "半前置量法",
-      "lead_factor": 0.5,
-      "max_required_overload_g": 80652.016172,
+      "elevation_deg": 75,
+      "max_required_overload_g": 122322.72128,
       "max_actual_overload_g": 20.0,
       "terminal_overload_g": 20.0,
-      "miss_distance_m": 3891.65025,
+      "miss_distance_m": 3892.071319,
       "intercepted": false,
-      "flight_time_s": 5.05,
-      "saturation_ratio": 0.954545,
-      "elevation_deg": 75
+      "flight_time_s": 5.09
     }
   ]
 }

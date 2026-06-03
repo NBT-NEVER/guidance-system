@@ -2,87 +2,49 @@
 """
 开发者: OpenAI Codex
 文件名: config.py
-生成时间: 2026-06-03 15:59:50
+生成时间: 2026-06-03 00:00:00
 文件名: config.py
-功能说明: 追踪法实验五 配置文件 / Configuration for tracking experiment.
+功能说明: 追踪法实验 5.0 配置文件 / Configuration for tracing experiment 5.0.
 """
 
 from pathlib import Path
 
-# 项目路径统一放在配置文件顶部，便于后续实验直接修改。
+# 当前实验根目录。
 PROJECT_ROOT = Path(__file__).resolve().parent
-DATA_DIR = PROJECT_ROOT / "data"
+# 当前实验输出根目录。
 SAVE_DIR = PROJECT_ROOT / "outputs"
-OUT_DIR = SAVE_DIR / "tables"
+# 当前实验表格输出目录。
+TABLE_DIR = SAVE_DIR / "tables"
+# 当前实验图像输出目录。
 FIGURE_DIR = SAVE_DIR / "figures"
-MODEL_DIR = PROJECT_ROOT / "models"
-LOG_DIR = PROJECT_ROOT / "logs"
 
-SUMMARY_CSV = OUT_DIR / "summary.csv"
-DETAIL_JSON = OUT_DIR / "summary.json"
+SUMMARY_CSV = TABLE_DIR / "summary.csv"
+SUMMARY_JSON = TABLE_DIR / "summary.json"
 TRAJECTORY_PNG = FIGURE_DIR / "trajectory.png"
-METRIC_PNG = FIGURE_DIR / "metrics.png"
-ATTACK_PNG = FIGURE_DIR / "attack_zone.png"
 
-EXPERIMENT = {'title': '实验五（困难）：考虑姿态控制回路的追踪法仿真',
-'mode': 'attitude_compare',
-'dt': 0.01,
-'t_max_s': 80.0,
-'hit_radius_m': 5.0,
-'max_overload_g': 20.0,
-'base_scenario': {'initial_range_m': 4000.0,
-           'initial_los_deg': 90.0,
-           'target_heading_deg': 0.0,
-           'target_speed_mps': 272.0,
-           'missile_speed_mps': 408.0},
-'attitude_loop': {'zeta': 0.707, 'omega_n': 10.0}}
+TITLE = "实验 5.0：带姿态回路的追踪法拦截对比"
 
+DT = 0.01
+T_MAX_S = 80.0
+HIT_RADIUS_M = 5.0
+MAX_OVERLOAD_G = 20.0
 
-def build_config() -> dict:
-    """
-    功能：汇总路径信息与实验参数，生成主程序可直接使用的配置对象。
-    参数：无。
-    返回：包含路径、输出文件名和实验配置项的字典。
-    调用位置：main.py 程序入口与实验分支调度逻辑。
-    """
-
-    return {
-        "project_root": PROJECT_ROOT,
-        "data_dir": DATA_DIR,
-        "save_dir": SAVE_DIR,
-        "out_dir": OUT_DIR,
-        "figure_dir": FIGURE_DIR,
-        "model_dir": MODEL_DIR,
-        "log_dir": LOG_DIR,
-        "summary_csv": SUMMARY_CSV,
-        "detail_json": DETAIL_JSON,
-        "trajectory_png": TRAJECTORY_PNG,
-        "metric_png": METRIC_PNG,
-        "attack_png": ATTACK_PNG,
-        **EXPERIMENT,
-    }
+MISSILE_SPEED_MPS = 408.0
+TARGET_SPEED_MPS = 272.0
+INITIAL_RANGE_M = 4000.0
+INITIAL_LOS_DEG = 90.0
+TARGET_HEADING_DEG = 0.0
+ZETA = 0.707
+OMEGA_N = 10.0
 
 
 def ensure_directories() -> None:
     """
-    功能：创建实验运行所需的目录，避免保存图表和表格时路径不存在。
+    功能：创建当前实验运行所需的输出目录。
     参数：无。
     返回：无。
-    调用位置：main.py 运行前的初始化阶段与 config.py 自检入口。
+    调用位置：main.py 入口初始化阶段。
     """
 
-    for folder in (DATA_DIR, SAVE_DIR, OUT_DIR, FIGURE_DIR, MODEL_DIR, LOG_DIR):
+    for folder in (SAVE_DIR, TABLE_DIR, FIGURE_DIR):
         folder.mkdir(parents=True, exist_ok=True)
-
-
-if __name__ == "__main__":
-    ensure_directories()
-    cfg = build_config()
-    print("关键路径清单：")
-    for key in ("project_root", "data_dir", "save_dir", "out_dir", "figure_dir", "log_dir"):
-        print(f"{key} -> {cfg[key]}")
-    print("\n当前目录已有文件：")
-    for folder in (PROJECT_ROOT, DATA_DIR, SAVE_DIR, OUT_DIR, FIGURE_DIR, LOG_DIR):
-        if folder.exists():
-            names = [item.name for item in folder.iterdir()]
-            print(f"{folder.name}: {names if names else '空目录'}")

@@ -1,13 +1,8 @@
 {
-  "title": "实验五（困难）：考虑姿态控制回路的追踪法仿真",
-  "mode": "attitude_compare",
+  "title": "实验 5.0：带姿态回路的追踪法拦截对比",
   "results": [
     {
       "case_name": "无姿态回路",
-      "missile_speed_mps": 408.0,
-      "target_speed_mps": 272.0,
-      "initial_range_m": 4000.0,
-      "initial_los_deg": 90.0,
       "max_required_overload_g": 5.329316,
       "max_actual_overload_g": 5.329316,
       "miss_distance_m": 4.49642,
@@ -17,10 +12,6 @@
     },
     {
       "case_name": "二阶姿态回路",
-      "missile_speed_mps": 408.0,
-      "target_speed_mps": 272.0,
-      "initial_range_m": 4000.0,
-      "initial_los_deg": 90.0,
       "max_required_overload_g": 8375.33781,
       "max_actual_overload_g": 20.0,
       "miss_distance_m": 7.68025,

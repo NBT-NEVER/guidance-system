@@ -1,3 +1,3 @@
-case_name,navigation_ratio,missile_speed_mps,target_speed_mps,max_required_overload_g,max_actual_overload_g,miss_distance_m,intercepted,flight_time_s,noise_std_radps,target_normal_g,saturation_ratio
-无姿态回路,5.0,500.0,300.0,3.314607,3.314607,1.464807,False,13.41,0.0,0.0,0.0
-二阶姿态回路,5.0,500.0,300.0,3.345406,3.384162,2.172047,False,13.41,0.0,0.0,0.0
+case_name,max_required_overload_g,max_actual_overload_g,miss_distance_m,intercepted,flight_time_s,saturation_ratio
+无姿态回路,3.314607,3.314607,1.464807,False,13.41,0.0
+二阶姿态回路,3.345406,3.384162,2.172047,False,13.41,0.0
