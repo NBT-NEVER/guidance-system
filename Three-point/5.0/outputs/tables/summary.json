@@ -1,0 +1,30 @@
+{
+  "title": "实验五（困难）：考虑姿态控制回路的三点法仿真",
+  "mode": "attitude_compare",
+  "results": [
+    {
+      "case_name": "无姿态回路",
+      "law_name": "三点法",
+      "lead_factor": 0.0,
+      "max_required_overload_g": 39.644975,
+      "max_actual_overload_g": 10.0,
+      "terminal_overload_g": 10.0,
+      "miss_distance_m": 8787.191647,
+      "intercepted": false,
+      "flight_time_s": 5.62,
+      "saturation_ratio": 0.618117
+    },
+    {
+      "case_name": "二阶姿态回路",
+      "law_name": "三点法",
+      "lead_factor": 0.0,
+      "max_required_overload_g": 39.70544,
+      "max_actual_overload_g": 10.0,
+      "terminal_overload_g": 10.0,
+      "miss_distance_m": 8719.940941,
+      "intercepted": false,
+      "flight_time_s": 5.87,
+      "saturation_ratio": 0.595238
+    }
+  ]
+}

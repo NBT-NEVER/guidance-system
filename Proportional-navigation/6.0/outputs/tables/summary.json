@@ -1,0 +1,34 @@
+{
+  "title": "实验六（困难）：考虑姿态控制回路的比例导引法仿真",
+  "mode": "attitude_compare",
+  "results": [
+    {
+      "case_name": "无姿态回路",
+      "navigation_ratio": 5.0,
+      "missile_speed_mps": 500.0,
+      "target_speed_mps": 300.0,
+      "max_required_overload_g": 3.314607,
+      "max_actual_overload_g": 3.314607,
+      "miss_distance_m": 1.464807,
+      "intercepted": false,
+      "flight_time_s": 13.41,
+      "noise_std_radps": 0.0,
+      "target_normal_g": 0.0,
+      "saturation_ratio": 0.0
+    },
+    {
+      "case_name": "二阶姿态回路",
+      "navigation_ratio": 5.0,
+      "missile_speed_mps": 500.0,
+      "target_speed_mps": 300.0,
+      "max_required_overload_g": 3.345406,
+      "max_actual_overload_g": 3.384162,
+      "miss_distance_m": 2.172047,
+      "intercepted": false,
+      "flight_time_s": 13.41,
+      "noise_std_radps": 0.0,
+      "target_normal_g": 0.0,
+      "saturation_ratio": 0.0
+    }
+  ]
+}
