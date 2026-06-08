@@ -23,13 +23,17 @@
 本实验对下列初始条件做网格扫描：
 
 - 初始弹目距离 \(R_0\)
+  渲染：R₀
 - 初始视线角 \(q_0\)
+  渲染：q₀
 
 目标初始坐标仍由
 
 \[
 x_T(0)=R_0\cos q_0,\qquad y_T(0)=R_0\sin q_0
 \]
+
+渲染：x_T(0) = R₀ cos q₀，y_T(0) = R₀ sin q₀
 
 给出。
 
@@ -41,15 +45,21 @@ x_T(0)=R_0\cos q_0,\qquad y_T(0)=R_0\sin q_0
 \gamma_c=\operatorname{atan2}(y_T-y_M,\ x_T-x_M)
 \]
 
+渲染：γ_c = atan2(y_T - y_M，x_T - x_M)
+
 \[
 n_c=\frac{V_M}{g}\cdot\frac{\gamma_c-\gamma}{\Delta t}
 \]
+
+渲染：n_c = (V_M / g) · [(γ_c - γ) / Δt]
 
 并对过载做饱和限制：
 
 \[
 n=\operatorname{sat}(n_c,\ -n_{\max},\ n_{\max})
 \]
+
+渲染：n = sat(n_c，-n_max，n_max)
 
 ### 3.3 攻击区判定标准
 
@@ -64,11 +74,15 @@ n=\operatorname{sat}(n_c,\ -n_{\max},\ n_{\max})
 R_{\min}\le R_{\text{hit}}
 \]
 
+渲染：R_min ≤ R_hit
+
 并且
 
 \[
 n_{\max,\text{required}}\le n_{\max}
 \]
+
+渲染：n_max,required ≤ n_max
 
 则判定该点属于允许攻击区。
 

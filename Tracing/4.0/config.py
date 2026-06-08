@@ -21,6 +21,7 @@ FIGURE_DIR = SAVE_DIR / "figures"
 SUMMARY_CSV = TABLE_DIR / "summary.csv"
 SUMMARY_JSON = TABLE_DIR / "summary.json"
 ATTACK_PNG = FIGURE_DIR / "attack_zone.png"
+CARTESIAN_MISS_PNG = FIGURE_DIR / "attack_zone_cartesian_miss.png"
 
 TITLE = "实验 4.0：追踪法允许攻击区判定"
 
