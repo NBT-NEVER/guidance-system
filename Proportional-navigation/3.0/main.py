@@ -1,6 +1,6 @@
 # _*_coding:UTF-8_*_
 """
-开发者: OpenAI Codex
+开发者: NBT
 文件名: main.py
 生成时间: 2026-06-03 00:00:00
 文件名: main.py

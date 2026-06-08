@@ -1,6 +1,6 @@
 # _*_coding:UTF-8_*_
 """
-开发者: OpenAI Codex
+开发者: NBT
 文件名: main.py
 生成时间: 2026-06-03 00:00:00
 文件名: main.py
@@ -19,24 +19,24 @@ from matplotlib import font_manager
 from matplotlib.lines import Line2D
 
 from config import (
-    ATTACK_PNG,
-    CARTESIAN_MISS_PNG,
-    DT,
-    FIGURE_DIR,
-    HIT_RADIUS_M,
-    LOS_VALUES_DEG,
-    MAX_OVERLOAD_G,
-    MISSILE_SPEED_MPS,
-    RANGE_VALUES_M,
-    SAVE_DIR,
-    SUMMARY_CSV,
-    SUMMARY_JSON,
-    TABLE_DIR,
-    TARGET_HEADING_DEG,
-    TARGET_SPEED_MPS,
-    TITLE,
-    T_MAX_S,
-    ensure_directories,
+    ATTACK_PNG,  # 允许攻击区散点图输出文件路径。
+    CARTESIAN_MISS_PNG,  # 直角坐标攻击区图输出文件路径。
+    DT,  # 离散积分步长，单位为 s。
+    FIGURE_DIR,  # 图像输出目录。
+    HIT_RADIUS_M,  # 命中判定半径，单位为 m。
+    LOS_VALUES_DEG,  # 初始视线角扫描序列，单位为 deg。
+    MAX_OVERLOAD_G,  # 导弹最大允许法向过载，单位为 g。
+    MISSILE_SPEED_MPS,  # 导弹飞行速度，单位为 m/s。
+    RANGE_VALUES_M,  # 初始弹目距离扫描序列，单位为 m。
+    SAVE_DIR,  # 当前实验输出根目录。
+    SUMMARY_CSV,  # 汇总结果 CSV 文件路径。
+    SUMMARY_JSON,  # 汇总结果 JSON 文件路径。
+    TABLE_DIR,  # 表格输出目录。
+    TARGET_HEADING_DEG,  # 目标航向角，单位为 deg。
+    TARGET_SPEED_MPS,  # 目标飞行速度，单位为 m/s。
+    TITLE,  # 图表标题文本。
+    T_MAX_S,  # 单条轨迹最大仿真时长，单位为 s。
+    ensure_directories,  # 创建输出目录结构的初始化函数。
 )
 
 G0 = 9.80665
@@ -76,7 +76,7 @@ def write_summary(rows: list[dict]) -> None:
 
 def plot_attack_zone(results: list[dict]) -> None:
     """
-    功能：绘制追踪法允许攻击区散点图。
+    功能：绘制追踪法允许攻击区直角坐标系散点图。
     参数：results 为网格扫描结果列表。
     返回：无。
     调用位置：main() 统计完成后。
@@ -333,24 +333,26 @@ def main() -> None:
             # 1. 实际进入命中半径；
             # 2. 理论需求过载峰值不超过允许上限。
             feasible = intercepted and max_required_g <= MAX_OVERLOAD_G
+            # 将当前这一组初始条件对应的统计结果写入结果表，
+            # 这些字段会同时输出到 summary.csv / summary.json，并被后续绘图函数读取。
             results.append(
                 {
-                    "initial_range_m": initial_range_m,
-                    "initial_los_deg": initial_los_deg,
-                    "max_required_overload_g": round(max_required_g, 6),
-                    "max_actual_overload_g": round(max_actual_g, 6),
-                    "miss_distance_m": round(min_range, 6),
-                    "intercepted": intercepted,
-                    "flight_time_s": round(flight_time_s, 6),
-                    "saturation_ratio": round(saturation_steps / max(1, int(flight_time_s / DT) + 1), 6),
-                    "feasible": feasible,
+                    "initial_range_m": initial_range_m,  # 初始弹目距离 R0，即仿真开始时目标到导弹的直线距离，单位为 m。
+                    "initial_los_deg": initial_los_deg,  # 初始视线角 q0，即目标相对导弹的初始方位角，单位为 deg。
+                    "max_required_overload_g": round(max_required_g, 6),  # 理论需求过载峰值，即未经过载限幅前控制律要求的最大法向过载，单位为 g。
+                    "max_actual_overload_g": round(max_actual_g, 6),  # 实际执行过载峰值，即经过 ±MAX_OVERLOAD_G 限幅后真正输出过的最大法向过载，单位为 g。
+                    "miss_distance_m": round(min_range, 6),  # 最小弹目距离，即整个飞行过程中出现过的最近接距离；若未命中，它也可视为脱靶量，单位为 m。
+                    "intercepted": intercepted,  # 是否命中：True 表示弹目距离曾进入命中半径 HIT_RADIUS_M，False 表示始终未进入命中半径。
+                    "flight_time_s": round(flight_time_s, 6),  # 本组轨迹累计飞行时间；命中时表示命中时刻，未命中时表示仿真终止时刻，单位为 s。
+                    "saturation_ratio": round(saturation_steps / max(1, int(flight_time_s / DT) + 1), 6),  # 过载饱和比例，即发生限幅的离散步数占总积分步数的比例，用于反映控制指令触及过载上限的频繁程度。
+                    "feasible": feasible,  # 攻击区可行性判定：既要命中 intercepted=True，又要求理论需求过载峰值不超过允许上限 MAX_OVERLOAD_G。
                 }
             )
 
     # 输出数值结果表，便于后续统计、复核和报告引用。
     write_summary(results)
     # 绘制当前实验的允许攻击区判定图。
-    plot_attack_zone(results)
+    #plot_attack_zone(results)
     # 绘制极坐标初始条件映射到直角坐标后的脱靶量圆圈图。
     plot_cartesian_attack_zone(results)
     print(f"实验完成，结果已保存到 {SAVE_DIR}")
