@@ -2,9 +2,10 @@
 """
 开发者: NBT
 文件名: main.py
-生成时间: 2026-06-03 00:00:00
+开发时间: 2026-06-03 00:00:00
 文件名: main.py
-功能说明: 追踪法实验 4.0 主程序 / Main program for tracing experiment 4.0.
+功能说明:追踪法允许攻击区分析主程序
+版本号：4.0
 """
 
 import csv
@@ -22,7 +23,6 @@ from config import (
     ATTACK_PNG,  # 允许攻击区散点图输出文件路径。
     CARTESIAN_MISS_PNG,  # 直角坐标攻击区图输出文件路径。
     DT,  # 离散积分步长，单位为 s。
-    FIGURE_DIR,  # 图像输出目录。
     HIT_RADIUS_M,  # 命中判定半径，单位为 m。
     LOS_VALUES_DEG,  # 初始视线角扫描序列，单位为 deg。
     MAX_OVERLOAD_G,  # 导弹最大允许法向过载，单位为 g。
@@ -31,7 +31,6 @@ from config import (
     SAVE_DIR,  # 当前实验输出根目录。
     SUMMARY_CSV,  # 汇总结果 CSV 文件路径。
     SUMMARY_JSON,  # 汇总结果 JSON 文件路径。
-    TABLE_DIR,  # 表格输出目录。
     TARGET_HEADING_DEG,  # 目标航向角，单位为 deg。
     TARGET_SPEED_MPS,  # 目标飞行速度，单位为 m/s。
     TITLE,  # 图表标题文本。
@@ -97,7 +96,7 @@ def plot_attack_zone(results: list[dict]) -> None:
 
 def plot_cartesian_attack_zone(results: list[dict]) -> None:
     """
-    功能：绘制极坐标初始条件转为直角坐标后的可击中/不可击中分布图。
+    功能：绘制极坐标允许攻击区。
     参数：results 为网格扫描结果列表。
     返回：无。
     调用位置：main() 统计完成后。

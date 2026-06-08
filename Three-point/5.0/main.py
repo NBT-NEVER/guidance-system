@@ -2,9 +2,10 @@
 """
 开发者: NBT
 文件名: main.py
-生成时间: 2026-06-03 00:00:00
+开发时间: 2026-06-03 00:00:00
 文件名: main.py
-功能说明: 三点法实验 5.0 主程序 / Main program for three-point experiment 5.0.
+功能说明:三点法姿态回路影响分析主程序
+版本号：5.0
 """
 
 import csv

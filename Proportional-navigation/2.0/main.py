@@ -2,9 +2,10 @@
 """
 开发者: NBT
 文件名: main.py
-生成时间: 2026-06-03 00:00:00
+开发时间: 2026-06-03 00:00:00
 文件名: main.py
-功能说明: 比例导航实验 2.0 主程序 / Main program for proportional-navigation experiment 2.0.
+功能说明:比例导航法视线角速度测量噪声影响分析主程序
+版本号：2.0
 """
 
 import csv

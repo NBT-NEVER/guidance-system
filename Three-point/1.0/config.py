@@ -2,9 +2,10 @@
 """
 开发者: NBT
 文件名: config.py
-生成时间: 2026-06-03 00:00:00
+开发时间: 2026-06-03 00:00:00
 文件名: config.py
-功能说明: 三点法实验一独立配置 / Independent configuration for three-point experiment 1.0.
+功能说明:三点法制导律参数影响分析配置文件
+版本号：1.0
 """
 
 from pathlib import Path

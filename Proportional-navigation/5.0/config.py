@@ -2,9 +2,10 @@
 """
 开发者: NBT
 文件名: config.py
-生成时间: 2026-06-03 00:00:00
+开发时间: 2026-06-03 00:00:00
 文件名: config.py
-功能说明: 比例导航实验 5.0 配置文件 / Configuration for proportional-navigation experiment 5.0.
+功能说明:比例导航法允许攻击区分析配置文件
+版本号：5.0
 """
 
 from pathlib import Path

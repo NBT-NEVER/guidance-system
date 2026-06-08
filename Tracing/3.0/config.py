@@ -2,9 +2,10 @@
 """
 开发者: NBT
 文件名: config.py
-生成时间: 2026-06-03 00:00:00
+开发时间: 2026-06-03 00:00:00
 文件名: config.py
-功能说明: 追踪法实验 3.0 配置文件 / Configuration for tracing experiment 3.0.
+功能说明:追踪法初始弹目距离对拦截过程影响分析配置文件
+版本号：3.0
 """
 
 from pathlib import Path
