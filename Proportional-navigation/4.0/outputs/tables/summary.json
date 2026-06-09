@@ -1,0 +1,50 @@
+{
+  "title": "实验 4.0：比例导航法对目标机动的适应性",
+  "results": [
+    {
+      "target_normal_g": 0.0,
+      "max_required_overload_g": 3.314607,
+      "max_actual_overload_g": 3.314607,
+      "miss_distance_m": 1.464807,
+      "intercepted": false,
+      "flight_time_s": 13.41,
+      "saturation_ratio": 0.0
+    },
+    {
+      "target_normal_g": 1.0,
+      "max_required_overload_g": 3.314607,
+      "max_actual_overload_g": 3.314607,
+      "miss_distance_m": 1.399574,
+      "intercepted": false,
+      "flight_time_s": 13.14,
+      "saturation_ratio": 0.0
+    },
+    {
+      "target_normal_g": 2.0,
+      "max_required_overload_g": 3.314607,
+      "max_actual_overload_g": 3.314607,
+      "miss_distance_m": 1.168329,
+      "intercepted": false,
+      "flight_time_s": 13.41,
+      "saturation_ratio": 0.0
+    },
+    {
+      "target_normal_g": 3.0,
+      "max_required_overload_g": 4.105169,
+      "max_actual_overload_g": 4.105169,
+      "miss_distance_m": 2.553739,
+      "intercepted": false,
+      "flight_time_s": 14.47,
+      "saturation_ratio": 0.0
+    },
+    {
+      "target_normal_g": 4.0,
+      "max_required_overload_g": 4.808348,
+      "max_actual_overload_g": 4.808348,
+      "miss_distance_m": 1.390206,
+      "intercepted": false,
+      "flight_time_s": 17.39,
+      "saturation_ratio": 0.0
+    }
+  ]
+}

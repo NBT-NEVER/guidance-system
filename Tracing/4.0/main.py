@@ -21,10 +21,10 @@ from matplotlib.lines import Line2D
 
 from config import (
     ATTACK_PNG,  # 允许攻击区散点图输出文件路径。
+    ATTACK_ZONE_POINT_SPACING_M,  # 攻击区扫描时沿圆弧方向的目标点间距，单位为 m。
     CARTESIAN_MISS_PNG,  # 直角坐标攻击区图输出文件路径。
     DT,  # 离散积分步长，单位为 s。
     HIT_RADIUS_M,  # 命中判定半径，单位为 m。
-    LOS_VALUES_DEG,  # 初始视线角扫描序列，单位为 deg。
     MAX_OVERLOAD_G,  # 导弹最大允许法向过载，单位为 g。
     MISSILE_SPEED_MPS,  # 导弹飞行速度，单位为 m/s。
     RANGE_VALUES_M,  # 初始弹目距离扫描序列，单位为 m。
@@ -94,13 +94,50 @@ def plot_attack_zone(results: list[dict]) -> None:
     plt.close(fig)
 
 
+def build_los_values_deg(initial_range_m: float) -> list[float]:
+    """
+    功能：按固定弧长间距生成当前半径下的初始视线角采样点。
+    参数：initial_range_m 为当前初始弹目距离。
+    返回：初始视线角列表，单位为 deg。
+    调用位置：main() 外层距离循环内部。
+    """
+
+    half_circle_length_m = math.pi * initial_range_m
+    total_segments = max(1, math.ceil(half_circle_length_m / ATTACK_ZONE_POINT_SPACING_M))
+    return [round(180.0 * segment_index / total_segments, 6) for segment_index in range(total_segments + 1)]
+
+
 def plot_cartesian_attack_zone(results: list[dict]) -> None:
     """
-    功能：绘制极坐标允许攻击区。
+    功能：绘制按自适应角度采样得到的直角坐标允许攻击区。
     参数：results 为网格扫描结果列表。
     返回：无。
     调用位置：main() 统计完成后。
     """
+
+    def append_mirrored_point(
+        range_m: float,
+        los_deg: float,
+        feasible: bool,
+        hit_x: list[float],
+        hit_y: list[float],
+        miss_x: list[float],
+        miss_y: list[float],
+    ) -> None:
+        los_rad = math.radians(los_deg)
+        x_pos = range_m * math.cos(los_rad)
+        y_pos = range_m * math.sin(los_rad)
+
+        # 当前程序扫描的是上半平面角度，这里通过关于 x 轴镜像，
+        # 将同一组初始条件同时投影到上下两个角度位置。
+        y_candidates = [y_pos] if abs(y_pos) < 1e-9 else [y_pos, -y_pos]
+        for mirrored_y in y_candidates:
+            if feasible:
+                hit_x.append(x_pos)
+                hit_y.append(mirrored_y)
+            else:
+                miss_x.append(x_pos)
+                miss_y.append(mirrored_y)
 
     fig, ax = plt.subplots(figsize=(9, 9))
     hit_x: list[float] = []
@@ -110,32 +147,19 @@ def plot_cartesian_attack_zone(results: list[dict]) -> None:
     max_range = 0.0
 
     for item in results:
-        los_rad = math.radians(item["initial_los_deg"])
-        x_pos = item["initial_range_m"] * math.cos(los_rad)
-        y_pos = item["initial_range_m"] * math.sin(los_rad)
-
-        # 当前程序扫描的是上半平面角度，这里通过关于 x 轴镜像，
-        # 将同一组初始条件同时投影到上下两个角度位置。
-        y_candidates = [y_pos] if abs(y_pos) < 1e-9 else [y_pos, -y_pos]
-
-        for mirrored_y in y_candidates:
-            if item["feasible"]:
-                hit_x.append(x_pos)
-                hit_y.append(mirrored_y)
-            else:
-                miss_x.append(x_pos)
-                miss_y.append(mirrored_y)
-
+        append_mirrored_point(
+            item["initial_range_m"],
+            item["initial_los_deg"],
+            item["feasible"],
+            hit_x,
+            hit_y,
+            miss_x,
+            miss_y,
+        )
         max_range = max(max_range, item["initial_range_m"])
 
-    # 蓝色空心圆表示可击中初始条件。
     ax.scatter(hit_x, hit_y, s=44, facecolors="none", edgecolors="#1f4fe0", linewidths=1.0, marker="o")
-    # 红色叉号表示不可击中初始条件。
     ax.scatter(miss_x, miss_y, s=20, c="#e53935", linewidths=0.9, marker="x")
-
-    # 在原始判定点位置再叠加一个更小的中心点，突出每个离散样本的真实坐标。
-    ax.scatter(hit_x, hit_y, s=7, c="#1f4fe0", marker="o")
-    ax.scatter(miss_x, miss_y, s=7, c="#e53935", marker="o")
     ax.scatter(0.0, 0.0, c="black", s=22, marker="s")
 
     ax.set_xlabel("初始目标 x 坐标 / m")
@@ -170,24 +194,6 @@ def plot_cartesian_attack_zone(results: list[dict]) -> None:
         Line2D(
             [0],
             [0],
-            marker="o",
-            linestyle="None",
-            color="#1f4fe0",
-            markersize=4,
-            label="可击中中心点",
-        ),
-        Line2D(
-            [0],
-            [0],
-            marker="o",
-            linestyle="None",
-            color="#e53935",
-            markersize=4,
-            label="不可击中中心点",
-        ),
-        Line2D(
-            [0],
-            [0],
             marker="s",
             linestyle="None",
             color="black",
@@ -211,7 +217,7 @@ def main() -> None:
 
     # 创建输出目录，避免后续保存表格和图像时因目录不存在而报错。
     ensure_directories()
-    # 配置绘图字体与负号显示。
+    # 配置绘图字体与符号显示。
     configure_matplotlib()
 
     # results 用于保存整个攻击区网格中每一个初始条件点的判定结果。
@@ -219,8 +225,11 @@ def main() -> None:
 
     # 双层循环分别扫描初始弹目距离 R0 和初始视线角 q0，
     # 每一组 (R0, q0) 都对应攻击区图上的一个离散采样点。
-    for initial_range_m in RANGE_VALUES_M:
-        for initial_los_deg in LOS_VALUES_DEG:
+    for initial_range_m in RANGE_VALUES_M:#距离
+        # 为了让直角坐标图中的点分布更均匀，
+        # 这里不再对所有半径使用固定角度步长，而是按圆弧长度自适应生成采样点。
+        los_values_deg = build_los_values_deg(initial_range_m)
+        for initial_los_deg in los_values_deg:#视线角
             # 建立二维平面直角坐标系，导弹初始位置固定在原点。
             x_m = 0.0  # 导弹当前 x 坐标，单位为 m。
             y_m = 0.0  # 导弹当前 y 坐标，单位为 m。
