@@ -94,6 +94,27 @@ def plot_attack_zone(results: list[dict]) -> None:
     plt.close(fig)
 
 
+def build_uniform_los_values_deg() -> list[float]:
+    """
+    功能：按固定角度步长生成所有半径共用的初始视线角采样点。
+    参数：无。
+    返回：初始视线角列表，单位为 deg。
+    调用位置：build_los_values_deg() 内部。
+    """
+
+    if UNIFORM_LOS_STEP_DEG <= 0.0:
+        raise ValueError("UNIFORM_LOS_STEP_DEG 必须大于 0。")
+
+    los_values_deg: list[float] = []
+    current_los_deg = 0.0
+    while current_los_deg < 180.0:
+        los_values_deg.append(round(current_los_deg, 6))
+        current_los_deg += UNIFORM_LOS_STEP_DEG
+    if not los_values_deg or los_values_deg[-1] != 180.0:
+        los_values_deg.append(180.0)
+    return los_values_deg
+
+
 def build_los_values_deg(initial_range_m: float) -> list[float]:
     """
     功能：按固定弧长间距生成当前半径下的初始视线角采样点。
@@ -102,9 +123,19 @@ def build_los_values_deg(initial_range_m: float) -> list[float]:
     调用位置：main() 外层距离循环内部。
     """
 
-    half_circle_length_m = math.pi * initial_range_m
-    total_segments = max(1, math.ceil(half_circle_length_m / ATTACK_ZONE_POINT_SPACING_M))
-    return [round(180.0 * segment_index / total_segments, 6) for segment_index in range(total_segments + 1)]
+    if LOS_SAMPLING_MODE == "uniform_angle":
+        return build_uniform_los_values_deg()
+
+    if LOS_SAMPLING_MODE == "adaptive_arc":
+        if ATTACK_ZONE_POINT_SPACING_M <= 0.0:
+            raise ValueError("ATTACK_ZONE_POINT_SPACING_M 必须大于 0。")
+        half_circle_length_m = math.pi * initial_range_m
+        total_segments = max(1, math.ceil(half_circle_length_m / ATTACK_ZONE_POINT_SPACING_M))
+        return [round(180.0 * segment_index / total_segments, 6) for segment_index in range(total_segments + 1)]
+
+    raise ValueError(
+        "LOS_SAMPLING_MODE 配置无效，可选值为 'adaptive_arc' 或 'uniform_angle'。"
+    )
 
 
 def plot_cartesian_attack_zone(results: list[dict]) -> None:
