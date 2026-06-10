@@ -25,6 +25,7 @@ from config import (
     CARTESIAN_MISS_PNG,  # 直角坐标攻击区图输出文件路径。
     DT,  # 离散积分步长，单位为 s。
     HIT_RADIUS_M,  # 命中判定半径，单位为 m。
+    LOS_SAMPLING_MODE,  # 初始视线角采样模式。
     MAX_OVERLOAD_G,  # 导弹最大允许法向过载，单位为 g。
     MISSILE_SPEED_MPS,  # 导弹飞行速度，单位为 m/s。
     RANGE_VALUES_M,  # 初始弹目距离扫描序列，单位为 m。
@@ -35,6 +36,7 @@ from config import (
     TARGET_SPEED_MPS,  # 目标飞行速度，单位为 m/s。
     TITLE,  # 图表标题文本。
     T_MAX_S,  # 单条轨迹最大仿真时长，单位为 s。
+    UNIFORM_LOS_STEP_DEG,  # 均匀采样模式下的固定角度步长，单位为 deg。
     ensure_directories,  # 创建输出目录结构的初始化函数。
 )
 
@@ -117,7 +119,7 @@ def build_uniform_los_values_deg() -> list[float]:
 
 def build_los_values_deg(initial_range_m: float) -> list[float]:
     """
-    功能：按固定弧长间距生成当前半径下的初始视线角采样点。
+    功能：按当前采样模式生成初始视线角采样点。
     参数：initial_range_m 为当前初始弹目距离。
     返回：初始视线角列表，单位为 deg。
     调用位置：main() 外层距离循环内部。
@@ -140,7 +142,7 @@ def build_los_values_deg(initial_range_m: float) -> list[float]:
 
 def plot_cartesian_attack_zone(results: list[dict]) -> None:
     """
-    功能：绘制按自适应角度采样得到的直角坐标允许攻击区。
+    功能：绘制当前采样模式下得到的直角坐标允许攻击区。
     参数：results 为网格扫描结果列表。
     返回：无。
     调用位置：main() 统计完成后。
@@ -257,8 +259,9 @@ def main() -> None:
     # 双层循环分别扫描初始弹目距离 R0 和初始视线角 q0，
     # 每一组 (R0, q0) 都对应攻击区图上的一个离散采样点。
     for initial_range_m in RANGE_VALUES_M:#距离
-        # 为了让直角坐标图中的点分布更均匀，
-        # 这里不再对所有半径使用固定角度步长，而是按圆弧长度自适应生成采样点。
+        # 采样模式统一由 LOS_SAMPLING_MODE 控制：
+        # "uniform_angle" 复用所有半径共用的均匀角度点，
+        # "adaptive_arc" 则按当前半径的半圆弧长自适应加密。
         los_values_deg = build_los_values_deg(initial_range_m)
         for initial_los_deg in los_values_deg:#视线角
             # 建立二维平面直角坐标系，导弹初始位置固定在原点。
