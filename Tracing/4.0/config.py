@@ -22,16 +22,16 @@ FIGURE_DIR = SAVE_DIR / "figures"
 SUMMARY_CSV = TABLE_DIR / "summary.csv"
 SUMMARY_JSON = TABLE_DIR / "summary.json"
 ATTACK_PNG = FIGURE_DIR / "attack_zone.png"
-CARTESIAN_MISS_PNG = FIGURE_DIR / "attack_zone_cartesian_miss.png"
+CARTESIAN_FEASIBLE_PNG = FIGURE_DIR / "attack_zone_cartesian_feasible.png"
+CARTESIAN_INTERCEPTED_PNG = FIGURE_DIR / "attack_zone_cartesian_intercepted.png"
+CARTESIAN_MISS_PNG = CARTESIAN_FEASIBLE_PNG
 
 TITLE = "实验 4.0：追踪法允许攻击区判定"
 
 DT = 0.01
 T_MAX_S = 80.0
-HIT_RADIUS_M = 5.0
-#攻击半径
-MAX_OVERLOAD_G = 20.0
-
+HIT_RADIUS_M = 5.0 #攻击半径
+MAX_OVERLOAD_G = 20.0 #法向过载
 MISSILE_SPEED_MPS = 1.2 * 340
 TARGET_SPEED_MPS = 0.8 * 340
 TARGET_HEADING_DEG = 0.0

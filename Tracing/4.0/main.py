@@ -22,7 +22,8 @@ from matplotlib.lines import Line2D
 from config import (
     ATTACK_PNG,  # 允许攻击区散点图输出文件路径。
     ATTACK_ZONE_POINT_SPACING_M,  # 攻击区扫描时沿圆弧方向的目标点间距，单位为 m。
-    CARTESIAN_MISS_PNG,  # 直角坐标攻击区图输出文件路径。
+    CARTESIAN_FEASIBLE_PNG,  # 直角坐标允许攻击区图输出文件路径。
+    CARTESIAN_INTERCEPTED_PNG,  # 直角坐标命中区域图输出文件路径。
     DT,  # 离散积分步长，单位为 s。
     HIT_RADIUS_M,  # 命中判定半径，单位为 m。
     LOS_SAMPLING_MODE,  # 初始视线角采样模式。
@@ -142,7 +143,7 @@ def build_los_values_deg(initial_range_m: float) -> list[float]:
 
 def plot_cartesian_attack_zone(results: list[dict]) -> None:
     """
-    功能：绘制当前采样模式下得到的直角坐标允许攻击区。
+    功能：分别绘制直角坐标允许攻击区图和命中区域图。
     参数：results 为网格扫描结果列表。
     返回：无。
     调用位置：main() 统计完成后。
@@ -151,32 +152,93 @@ def plot_cartesian_attack_zone(results: list[dict]) -> None:
     def append_mirrored_point(
         range_m: float,
         los_deg: float,
-        feasible: bool,
-        hit_x: list[float],
-        hit_y: list[float],
-        miss_x: list[float],
-        miss_y: list[float],
+        is_positive: bool,
+        positive_x: list[float],
+        positive_y: list[float],
+        negative_x: list[float],
+        negative_y: list[float],
     ) -> None:
         los_rad = math.radians(los_deg)
         x_pos = range_m * math.cos(los_rad)
         y_pos = range_m * math.sin(los_rad)
 
-        # 当前程序扫描的是上半平面角度，这里通过关于 x 轴镜像，
-        # 将同一组初始条件同时投影到上下两个角度位置。
+        # 关于 x 轴镜像，
         y_candidates = [y_pos] if abs(y_pos) < 1e-9 else [y_pos, -y_pos]
         for mirrored_y in y_candidates:
-            if feasible:
-                hit_x.append(x_pos)
-                hit_y.append(mirrored_y)
+            if is_positive:
+                positive_x.append(x_pos)
+                positive_y.append(mirrored_y)
             else:
-                miss_x.append(x_pos)
-                miss_y.append(mirrored_y)
+                negative_x.append(x_pos)
+                negative_y.append(mirrored_y)
 
-    fig, ax = plt.subplots(figsize=(9, 9))
-    hit_x: list[float] = []
-    hit_y: list[float] = []
-    miss_x: list[float] = []
-    miss_y: list[float] = []
+    def save_distribution_figure(
+        positive_x: list[float],
+        positive_y: list[float],
+        negative_x: list[float],
+        negative_y: list[float],
+        figure_title: str,
+        positive_label: str,
+        negative_label: str,
+        output_path,
+        axis_limit: float,
+    ) -> None:
+        fig, ax = plt.subplots(figsize=(9, 9))
+        ax.scatter(positive_x, positive_y, s=44, facecolors="none", edgecolors="#1f4fe0", linewidths=1.0, marker="o")
+        ax.scatter(negative_x, negative_y, s=20, c="#e53935", linewidths=0.9, marker="x")
+        ax.scatter(0.0, 0.0, c="black", s=22, marker="s")
+
+        ax.set_xlabel("初始目标 x 坐标 / m")
+        ax.set_ylabel("初始目标 y 坐标 / m")
+        ax.set_title(figure_title)
+        ax.set_aspect("equal", adjustable="box")
+        ax.set_xlim(-axis_limit, axis_limit)
+        ax.set_ylim(-axis_limit, axis_limit)
+        ax.grid(True, linestyle="--", alpha=0.4)
+        legend_handles = [
+            Line2D(
+                [0],
+                [0],
+                marker="o",
+                linestyle="None",
+                markerfacecolor="none",
+                markeredgecolor="#1f4fe0",
+                markeredgewidth=1.0,
+                markersize=7,
+                label=positive_label,
+            ),
+            Line2D(
+                [0],
+                [0],
+                marker="x",
+                linestyle="None",
+                color="#e53935",
+                markersize=7,
+                label=negative_label,
+            ),
+            Line2D(
+                [0],
+                [0],
+                marker="s",
+                linestyle="None",
+                color="black",
+                markersize=5,
+                label="导弹初始位置",
+            ),
+        ]
+        ax.legend(handles=legend_handles, loc="upper right")
+        fig.tight_layout()
+        fig.savefig(output_path, dpi=200)
+        plt.close(fig)
+
+    feasible_x: list[float] = []
+    feasible_y: list[float] = []
+    infeasible_x: list[float] = []
+    infeasible_y: list[float] = []
+    intercepted_x: list[float] = []
+    intercepted_y: list[float] = []
+    non_intercepted_x: list[float] = []
+    non_intercepted_y: list[float] = []
     max_range = 0.0
 
     for item in results:
@@ -184,60 +246,45 @@ def plot_cartesian_attack_zone(results: list[dict]) -> None:
             item["initial_range_m"],
             item["initial_los_deg"],
             item["feasible"],
-            hit_x,
-            hit_y,
-            miss_x,
-            miss_y,
+            feasible_x,
+            feasible_y,
+            infeasible_x,
+            infeasible_y,
+        )
+        append_mirrored_point(
+            item["initial_range_m"],
+            item["initial_los_deg"],
+            item["intercepted"],
+            intercepted_x,
+            intercepted_y,
+            non_intercepted_x,
+            non_intercepted_y,
         )
         max_range = max(max_range, item["initial_range_m"])
 
-    ax.scatter(hit_x, hit_y, s=44, facecolors="none", edgecolors="#1f4fe0", linewidths=1.0, marker="o")
-    ax.scatter(miss_x, miss_y, s=20, c="#e53935", linewidths=0.9, marker="x")
-    ax.scatter(0.0, 0.0, c="black", s=22, marker="s")
-
-    ax.set_xlabel("初始目标 x 坐标 / m")
-    ax.set_ylabel("初始目标 y 坐标 / m")
-    ax.set_title(f"{TITLE}：直角坐标可击中/不可击中分布")
-    ax.set_aspect("equal", adjustable="box")
     axis_limit = max_range * 1.05
-    ax.set_xlim(-axis_limit, axis_limit)
-    ax.set_ylim(-axis_limit, axis_limit)
-    ax.grid(True, linestyle="--", alpha=0.4)
-    legend_handles = [
-        Line2D(
-            [0],
-            [0],
-            marker="o",
-            linestyle="None",
-            markerfacecolor="none",
-            markeredgecolor="#1f4fe0",
-            markeredgewidth=1.0,
-            markersize=7,
-            label="可击中区域（蓝圈）",
-        ),
-        Line2D(
-            [0],
-            [0],
-            marker="x",
-            linestyle="None",
-            color="#e53935",
-            markersize=7,
-            label="不可击中区域（红叉）",
-        ),
-        Line2D(
-            [0],
-            [0],
-            marker="s",
-            linestyle="None",
-            color="black",
-            markersize=5,
-            label="导弹初始位置",
-        ),
-    ]
-    ax.legend(handles=legend_handles, loc="upper right")
-    fig.tight_layout()
-    fig.savefig(CARTESIAN_MISS_PNG, dpi=200)
-    plt.close(fig)
+    save_distribution_figure(
+        feasible_x,
+        feasible_y,
+        infeasible_x,
+        infeasible_y,
+        f"{TITLE}：直角坐标允许攻击区分布",
+        "允许攻击区（蓝圈）",
+        "非允许攻击区（红叉）",
+        CARTESIAN_FEASIBLE_PNG,
+        axis_limit,
+    )
+    save_distribution_figure(
+        intercepted_x,
+        intercepted_y,
+        non_intercepted_x,
+        non_intercepted_y,
+        f"{TITLE}：直角坐标命中区域分布",
+        "命中区域（蓝圈）",
+        "未命中区域（红叉）",
+        CARTESIAN_INTERCEPTED_PNG,
+        axis_limit,
+    )
 
 
 def main() -> None:
@@ -319,10 +366,12 @@ def main() -> None:
 
                 # 期望航向角等于当前视线角：
                 # gamma_c = atan2(y_T - y_M, x_T - x_M)。
-                desired_heading = math.atan2(rel_y, rel_x)  # 期望航向角，即当前视线角，单位为 rad。
+                desired_heading = math.atan2(rel_y, rel_x)  
+                # 期望航向角，即当前视线角，单位为 rad。
 
                 # 航向误差 e_gamma = gamma_c - gamma。
-                heading_error = desired_heading - gamma  # 期望航向与当前航向之间的误差，单位为 rad。
+                heading_error = desired_heading - gamma  
+                # 期望航向与当前航向之间的误差，单位为 rad。
 
                 # 将误差限制到 [-pi, pi]，确保导弹总是沿最短转向方向修正。
                 while heading_error > math.pi:
@@ -394,7 +443,7 @@ def main() -> None:
     # 输出数值结果表，便于后续统计、复核和报告引用。
     write_summary(results)
     # 绘制当前实验的允许攻击区判定图。
-    #plot_attack_zone(results)
+    plot_attack_zone(results)
     # 绘制极坐标初始条件映射到直角坐标后的脱靶量圆圈图。
     plot_cartesian_attack_zone(results)
     print(f"实验完成，结果已保存到 {SAVE_DIR}")
