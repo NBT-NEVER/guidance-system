@@ -367,7 +367,7 @@ def main() -> None:
                 closing_speed = (
                     rel_x * (TARGET_SPEED_MPS * math.cos(target_heading) - MISSILE_SPEED_MPS * math.cos(gamma))
                     + rel_y * (TARGET_SPEED_MPS * math.sin(target_heading) - MISSILE_SPEED_MPS * math.sin(gamma))
-                ) / max(rel_range, 1.0)  # 当前闭合速度，单位为 m/s。
+                ) / rel_range  # 当前闭合速度，单位为 m/s。
                 if step > 10 and closing_speed > 0.0 and rel_range > min_range + 1.0:
                     break
 
