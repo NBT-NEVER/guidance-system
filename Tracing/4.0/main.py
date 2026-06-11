@@ -42,6 +42,54 @@ from config import (
 )
 
 G0 = 9.80665
+StateVector = tuple[float, float, float, float, float]
+
+
+def add_scaled_state(base_state: StateVector, derivative: StateVector, scale: float) -> StateVector:
+    """
+    功能：按给定比例将状态导数叠加到当前状态上。
+    参数：base_state 为基础状态，derivative 为状态导数，scale 为缩放系数。
+    返回：更新后的状态向量。
+    调用位置：rk4_step() 内部。
+    """
+
+    return tuple(base_value + scale * derivative_value for base_value, derivative_value in zip(base_state, derivative))
+
+
+def compute_state_derivative(state: StateVector, actual_g: float, target_heading: float) -> StateVector:
+    """
+    功能：计算导弹与目标联合状态的一阶导数。
+    参数：state 为当前状态向量，actual_g 为当前步内保持常值的实际过载，target_heading 为目标航向角。
+    返回：状态导数向量。
+    调用位置：rk4_step() 内部。
+    """
+
+    gamma, _x_m, _y_m, _x_t, _y_t = state
+    gamma_dot = actual_g * G0 / MISSILE_SPEED_MPS
+    x_m_dot = MISSILE_SPEED_MPS * math.cos(gamma)
+    y_m_dot = MISSILE_SPEED_MPS * math.sin(gamma)
+    x_t_dot = TARGET_SPEED_MPS * math.cos(target_heading)
+    y_t_dot = TARGET_SPEED_MPS * math.sin(target_heading)
+    return gamma_dot, x_m_dot, y_m_dot, x_t_dot, y_t_dot
+
+
+def rk4_step(state: StateVector, dt: float, actual_g: float, target_heading: float) -> StateVector:
+    """
+    功能：使用四阶 Runge-Kutta 方法推进一小步导弹与目标联合状态。
+    参数：state 为当前状态向量，dt 为积分步长，actual_g 为当前步内保持常值的实际过载，target_heading 为目标航向角。
+    返回：积分一步后的新状态向量。
+    调用位置：main() 主积分循环内部。
+    """
+
+    k1 = compute_state_derivative(state, actual_g, target_heading)
+    k2 = compute_state_derivative(add_scaled_state(state, k1, dt / 2.0), actual_g, target_heading)
+    k3 = compute_state_derivative(add_scaled_state(state, k2, dt / 2.0), actual_g, target_heading)
+    k4 = compute_state_derivative(add_scaled_state(state, k3, dt), actual_g, target_heading)
+
+    return tuple(
+        state_value + dt * (k1_value + 2.0 * k2_value + 2.0 * k3_value + k4_value) / 6.0
+        for state_value, k1_value, k2_value, k3_value, k4_value in zip(state, k1, k2, k3, k4)
+    )
 
 
 def configure_matplotlib() -> None:
@@ -394,15 +442,14 @@ def main() -> None:
                 if abs(required_g) > MAX_OVERLOAD_G:
                     saturation_steps += 1
 
-                # 根据实际过载反推实际航向角变化率：
-                # gamma_dot = n_act * g0 / V_M。
-                # 随后用前向欧拉法更新导弹和目标位置。
-                gamma += actual_g * G0 / MISSILE_SPEED_MPS * DT
-                #actual_g * G0 / MISSILE_SPEED_MPS = gamma_dot
-                x_m += MISSILE_SPEED_MPS * math.cos(gamma) * DT
-                y_m += MISSILE_SPEED_MPS * math.sin(gamma) * DT
-                x_t += TARGET_SPEED_MPS * math.cos(target_heading) * DT
-                y_t += TARGET_SPEED_MPS * math.sin(target_heading) * DT
+                # 当前离散步内将实际过载视为常值，
+                # 再调用 RK4 对导弹航向、导弹位置和目标位置做联合积分。
+                gamma, x_m, y_m, x_t, y_t = rk4_step(
+                    (gamma, x_m, y_m, x_t, y_t),
+                    DT,
+                    actual_g,
+                    target_heading,
+                )
 
                 # 统计全过程中的峰值需求过载与峰值实际过载。
                 max_required_g = max(max_required_g, abs(required_g))

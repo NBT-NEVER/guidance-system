@@ -81,7 +81,39 @@ n=\operatorname{sat}(n_c,\ -n_{\max},\ n_{\max})
 
 渲染：n = sat(n_c，-n_max，n_max)
 
-### 3.3 攻击区判定标准
+### 3.3 RK4 数值积分公式
+
+若将导弹与目标的运动方程统一写成状态方程，则可表示为：
+
+$$
+\dot{y} = f(t, y)
+$$
+
+则四阶 Runge-Kutta（RK4）方法可写为：
+
+$$
+k_1 = f(t_n, y_n)
+$$
+
+$$
+k_2 = f\left(t_n + \frac{\Delta t}{2},\, y_n + \frac{\Delta t}{2}k_1\right)
+$$
+
+$$
+k_3 = f\left(t_n + \frac{\Delta t}{2},\, y_n + \frac{\Delta t}{2}k_2\right)
+$$
+
+$$
+k_4 = f(t_n + \Delta t,\, y_n + \Delta t\,k_3)
+$$
+
+$$
+y_{n+1} = y_n + \frac{\Delta t}{6}(k_1 + 2k_2 + 2k_3 + k_4)
+$$
+
+其中，$k_1$ 到 $k_4$ 分别表示在当前步长内不同采样位置计算得到的状态变化率，最后通过加权平均获得下一时刻状态。该方法比一阶欧拉积分更准确，常用于导弹轨迹、姿态和相对运动方程的离散积分。
+
+### 3.4 攻击区判定标准
 
 对每组初始条件，程序记录：
 
