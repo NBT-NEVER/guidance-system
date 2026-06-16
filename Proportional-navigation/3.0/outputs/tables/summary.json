@@ -1,0 +1,47 @@
+{
+  "title": "实验 3.0：比例导航法最小导航比搜索",
+  "results": [
+    {
+      "speed_ratio": 1.2,
+      "missile_speed_mps": 360.0,
+      "target_speed_mps": 300.0,
+      "min_navigation_ratio": 3.5,
+      "reachable": true
+    },
+    {
+      "speed_ratio": 1.4,
+      "missile_speed_mps": 420.0,
+      "target_speed_mps": 300.0,
+      "min_navigation_ratio": 2.9,
+      "reachable": true
+    },
+    {
+      "speed_ratio": 1.6,
+      "missile_speed_mps": 480.0,
+      "target_speed_mps": 300.0,
+      "min_navigation_ratio": 2.6,
+      "reachable": true
+    },
+    {
+      "speed_ratio": 1.8,
+      "missile_speed_mps": 540.0,
+      "target_speed_mps": 300.0,
+      "min_navigation_ratio": null,
+      "reachable": false
+    },
+    {
+      "speed_ratio": 2.0,
+      "missile_speed_mps": 600.0,
+      "target_speed_mps": 300.0,
+      "min_navigation_ratio": 2.5,
+      "reachable": true
+    },
+    {
+      "speed_ratio": 2.2,
+      "missile_speed_mps": 660.0,
+      "target_speed_mps": 300.0,
+      "min_navigation_ratio": null,
+      "reachable": false
+    }
+  ]
+}

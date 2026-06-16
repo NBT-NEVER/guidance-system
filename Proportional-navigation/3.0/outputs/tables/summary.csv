@@ -1,0 +1,7 @@
+speed_ratio,missile_speed_mps,target_speed_mps,min_navigation_ratio,reachable
+1.2,360.0,300.0,3.5,True
+1.4,420.0,300.0,2.9,True
+1.6,480.0,300.0,2.6,True
+1.8,540.0,300.0,,False
+2.0,600.0,300.0,2.5,True
+2.2,660.0,300.0,,False
