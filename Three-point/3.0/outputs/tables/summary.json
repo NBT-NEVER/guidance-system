@@ -1,0 +1,155 @@
+{
+  "title": "实验 3.0：目标机动条件下三种地面站制导方法对比",
+  "results": [
+    {
+      "law_name": "三点法",
+      "target_normal_g": 1.0,
+      "max_required_overload_g": 41.187372,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4026.635817,
+      "intercepted": false,
+      "flight_time_s": 2.63
+    },
+    {
+      "law_name": "前置量法",
+      "target_normal_g": 1.0,
+      "max_required_overload_g": 86918.748201,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4126.618793,
+      "intercepted": false,
+      "flight_time_s": 2.65
+    },
+    {
+      "law_name": "半前置量法",
+      "target_normal_g": 1.0,
+      "max_required_overload_g": 58746.773584,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4121.581938,
+      "intercepted": false,
+      "flight_time_s": 2.91
+    },
+    {
+      "law_name": "三点法",
+      "target_normal_g": 2.0,
+      "max_required_overload_g": 39.760688,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4037.702736,
+      "intercepted": false,
+      "flight_time_s": 2.62
+    },
+    {
+      "law_name": "前置量法",
+      "target_normal_g": 2.0,
+      "max_required_overload_g": 124004.172696,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4136.185371,
+      "intercepted": false,
+      "flight_time_s": 3.34
+    },
+    {
+      "law_name": "半前置量法",
+      "target_normal_g": 2.0,
+      "max_required_overload_g": 72186.868736,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4128.71656,
+      "intercepted": false,
+      "flight_time_s": 2.98
+    },
+    {
+      "law_name": "三点法",
+      "target_normal_g": 3.0,
+      "max_required_overload_g": 38.258019,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4046.723841,
+      "intercepted": false,
+      "flight_time_s": 2.61
+    },
+    {
+      "law_name": "前置量法",
+      "target_normal_g": 3.0,
+      "max_required_overload_g": 42029.385024,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4146.863994,
+      "intercepted": false,
+      "flight_time_s": 2.53
+    },
+    {
+      "law_name": "半前置量法",
+      "target_normal_g": 3.0,
+      "max_required_overload_g": 83758.741855,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4132.210015,
+      "intercepted": false,
+      "flight_time_s": 2.53
+    },
+    {
+      "law_name": "三点法",
+      "target_normal_g": 4.0,
+      "max_required_overload_g": 36.901035,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4053.633137,
+      "intercepted": false,
+      "flight_time_s": 2.62
+    },
+    {
+      "law_name": "前置量法",
+      "target_normal_g": 4.0,
+      "max_required_overload_g": 64939.018169,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4152.824759,
+      "intercepted": false,
+      "flight_time_s": 2.85
+    },
+    {
+      "law_name": "半前置量法",
+      "target_normal_g": 4.0,
+      "max_required_overload_g": 43721.131402,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4132.641333,
+      "intercepted": false,
+      "flight_time_s": 2.44
+    },
+    {
+      "law_name": "三点法",
+      "target_normal_g": 5.0,
+      "max_required_overload_g": 35.560226,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4058.293797,
+      "intercepted": false,
+      "flight_time_s": 2.64
+    },
+    {
+      "law_name": "前置量法",
+      "target_normal_g": 5.0,
+      "max_required_overload_g": 77279.907181,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4152.555843,
+      "intercepted": false,
+      "flight_time_s": 2.6
+    },
+    {
+      "law_name": "半前置量法",
+      "target_normal_g": 5.0,
+      "max_required_overload_g": 50158.271852,
+      "max_actual_overload_g": 20.0,
+      "terminal_overload_g": 20.0,
+      "miss_distance_m": 4123.587309,
+      "intercepted": false,
+      "flight_time_s": 2.51
+    }
+  ]
+}
